@@ -292,7 +292,10 @@ namespace DeviceProgramming.Dfu
             if (status.State.Abortable())
             {
                 Abort();
+                status = GetStatus();
             }
+
+            VerifyState(status, State.Idle);
         }
 
         /// <summary>
