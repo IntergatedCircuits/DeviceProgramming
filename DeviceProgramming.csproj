@@ -47,7 +47,6 @@
     <Compile Include="Dfu\Request.cs" />
     <Compile Include="Dfu\State.cs" />
     <Compile Include="Dfu\Status.cs" />
-    <Compile Include="Dfu\TestDevice.cs" />
     <Compile Include="FileFormat\Dfu.cs" />
     <Compile Include="FileFormat\IntelHex.cs" />
     <Compile Include="FileFormat\SRecord.cs" />
