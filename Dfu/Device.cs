@@ -19,6 +19,7 @@ namespace DeviceProgramming.Dfu
         public static readonly byte InterfaceProtocol_Runtime = 0x01;
         public static readonly byte InterfaceProtocol_DFU = 0x02;
 
+        [Serializable]
         public class InvalidStateException : Exception
         {
             public InvalidStateException(State expected, State actual)
