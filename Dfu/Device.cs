@@ -241,8 +241,6 @@ namespace DeviceProgramming.Dfu
             if (DfuDescriptor.WillDetach)
             {
                 Close();
-                // some additional sleep is introduced to amount to the OS detection and driver mounting delays
-                Thread.Sleep(DfuDescriptor.DetachTimeout + 200);
             }
             // Otherwise, the device starts a timer counting the amount of time
             // specified, in milliseconds, in the wDetachTimeout field.
@@ -252,6 +250,9 @@ namespace DeviceProgramming.Dfu
             {
                 BusReset();
             }
+
+            // some additional sleep is introduced to amount to the OS detection and driver mounting delays
+            Thread.Sleep(DfuDescriptor.DetachTimeout + 500);
         }
 
         /// <summary>
