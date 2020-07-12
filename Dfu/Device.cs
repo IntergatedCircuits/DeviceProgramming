@@ -77,33 +77,33 @@ namespace DeviceProgramming.Dfu
         /// <summary>
         /// Returns the number of available alternate settings of the DFU interface.
         /// </summary>
-        public abstract byte NumberOfAlternateSettings { get; }
+        protected abstract byte NumberOfAlternateSettings { get; }
 
         /// <summary>
         /// Gets or sets the DFU interface's alternate setting.
         /// </summary>
-        public abstract byte AlternateSetting { get; set; }
+        protected abstract byte AlternateSetting { get; set; }
 
         /// <summary>
         /// Returns the string index of the specified alternate selector.
         /// </summary>
         /// <param name="altSetting">The alternate selector index</param>
         /// <returns>The string index</returns>
-        public abstract byte iAlternateSetting(byte altSetting);
+        protected abstract byte iAlternateSetting(byte altSetting);
 
         /// <summary>
         /// Reads the USB device string for a specific string index.
         /// </summary>
         /// <param name="iString">USB device string index to read with</param>
         /// <returns>The string from the device</returns>
-        public abstract string GetString(byte iString);
+        protected abstract string GetString(byte iString);
 
         /// <summary>
         /// USB class-specific control transfer to the DFU interface, with 0 length.
         /// </summary>
         /// <param name="request">Class request code</param>
         /// <param name="value">Value field of the setup request</param>
-        public abstract void ControlTransfer(Request request, ushort value = 0);
+        protected abstract void ControlTransfer(Request request, ushort value = 0);
 
         /// <summary>
         /// USB class-specific control transfer to the DFU interface, with OUT data.
@@ -111,7 +111,7 @@ namespace DeviceProgramming.Dfu
         /// <param name="request">Class request code</param>
         /// <param name="value">Value field of the setup request</param>
         /// <param name="outdata">OUT data to send to the device</param>
-        public abstract void ControlTransfer(Request request, ushort value, byte[] outdata);
+        protected abstract void ControlTransfer(Request request, ushort value, byte[] outdata);
 
         /// <summary>
         /// USB class-specific control transfer to the DFU interface, with IN data.
@@ -119,7 +119,7 @@ namespace DeviceProgramming.Dfu
         /// <param name="request">Class request code</param>
         /// <param name="value">Value field of the setup request</param>
         /// <param name="indata">IN data to fill from the device</param>
-        public abstract void ControlTransfer(Request request, ushort value, ref byte[] indata);
+        protected abstract void ControlTransfer(Request request, ushort value, ref byte[] indata);
 
         // not used, only added for symmetry
         //public abstract void Open();
@@ -139,7 +139,7 @@ namespace DeviceProgramming.Dfu
         /// Performs a USB bus reset for the device (also closing the device in the operation).
         /// Only required for devices which don't WillDetach, or are ManifestationTolerant.
         /// </summary>
-        public abstract void BusReset();
+        protected abstract void BusReset();
         #endregion
 
         #region DFU class requests
