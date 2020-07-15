@@ -29,7 +29,7 @@ namespace DeviceProgramming.FileFormat
         /// allow the host software to detect and prevent attempts to download incompatible firmware.
         /// </summary>
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        private struct Suffix
+        internal struct Suffix
         {
             /// <summary>
             /// Total size of this structure in bytes.
@@ -195,10 +195,53 @@ namespace DeviceProgramming.FileFormat
             public Device.Identification DeviceInfo { get; private set; }
             public Dictionary<byte, NamedMemory> ImagesByAltSetting { get; private set; }
 
-            public FileContent(ushort vendorId, ushort productId, ushort bcdProductVersion, ushort bcdDfuVersion)
+            public FileContent(Device.Identification devInfo)
             {
-                DeviceInfo = new Device.Identification(vendorId, productId, bcdProductVersion, bcdDfuVersion);
+                DeviceInfo = devInfo;
                 ImagesByAltSetting = new Dictionary<byte, NamedMemory>();
+            }
+        }
+
+        private static Suffix ReadSuffix(BinaryReader reader)
+        {
+            // this is the part of the file that the CRC is calculated on
+            byte[] content = new byte[reader.BaseStream.Length - 4];
+            reader.BaseStream.Position = 0;
+            reader.Read(content, 0, content.Length);
+
+            byte[] suffixdata = new byte[Suffix.Size];
+            reader.BaseStream.Position = reader.BaseStream.Length - Suffix.Size;
+            reader.Read(suffixdata, 0, Suffix.Size);
+            var suffix = suffixdata.ToStruct<Suffix>();
+
+            // verify suffix
+            if (suffix.dwCRC != Crc32.Calculate(content))
+            {
+                throw new ArgumentException("The selected dfu file has invalid CRC.");
+            }
+            if (suffix.bLength < Suffix.Size)
+            {
+                throw new ArgumentException("The selected dfu file has invalid suffix length.");
+            }
+            if (suffix.sDfuSignature != Suffix.Signature)
+            {
+                throw new ArgumentException("The selected dfu file has invalid suffix signature.");
+            }
+
+            return suffix;
+        }
+
+        /// <summary>
+        /// Extracts the device and firmware version information of a DFU file.
+        /// </summary>
+        /// <param name="filepath">Path to the DFU file</param>
+        /// <returns>The device and image version information</returns>
+        public static Device.Identification ParseFileInfo(string filepath)
+        {
+            using (BinaryReader reader = new BinaryReader(File.Open(filepath, FileMode.Open)))
+            {
+                var suffix = ReadSuffix(reader);
+                return new Device.Identification(suffix);
             }
         }
 
@@ -209,38 +252,16 @@ namespace DeviceProgramming.FileFormat
         /// <returns>The device and memory image information</returns>
         public static FileContent ParseFile(string filepath)
         {
-            FileContent fc;
-
             using (BinaryReader reader = new BinaryReader(File.Open(filepath, FileMode.Open)))
             {
-                // this is the part of the file that the CRC is calculated on
-                byte[] content = new byte[reader.BaseStream.Length - 4];
-                reader.Read(content, 0, content.Length);
-
-                // read the DFU file suffix first
-                byte[] suffixdata = new byte[Suffix.Size];
-                reader.BaseStream.Position = reader.BaseStream.Length - Suffix.Size;
-                reader.Read(suffixdata, 0, Suffix.Size);
-                var suffix = suffixdata.ToStruct<Suffix>();
-
-                // verify suffix
-                if (suffix.dwCRC != Crc32.Calculate(content))
-                {
-                    throw new ArgumentException("The selected dfu file has invalid CRC.");
-                }
-                if (suffix.bLength < Suffix.Size)
-                {
-                    throw new ArgumentException("The selected dfu file has invalid suffix length.");
-                }
-                if (suffix.sDfuSignature != Suffix.Signature)
-                {
-                    throw new ArgumentException("The selected dfu file has invalid suffix signature.");
-                }
-
-                fc = new FileContent(suffix.idVendor, suffix.idProduct, suffix.bcdDevice, suffix.bcdDFU);
+                var suffix = ReadSuffix(reader);
+                var devInfo = new Device.Identification(suffix);
+                var fc = new FileContent(devInfo);
 
                 // remove the suffix from the contents
-                Array.Resize<byte>(ref content, (int)reader.BaseStream.Length - suffix.bLength);
+                byte[] content = new byte[reader.BaseStream.Length - suffix.bLength];
+                reader.BaseStream.Position = 0;
+                reader.Read(content, 0, content.Length);
 
                 // if the protocol version is according to USB spec
                 if (fc.DeviceInfo.DfuVersion <= Protocol.LatestVersion)

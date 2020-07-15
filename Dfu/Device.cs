@@ -50,6 +50,11 @@ namespace DeviceProgramming.Dfu
                 ProductVersion = new Version(bcdProductVersion >> 8, bcdProductVersion & 0xff);
                 DfuVersion = new Version(bcdDfuVersion >> 8, bcdDfuVersion & 0xff);
             }
+
+            internal Identification(FileFormat.Dfu.Suffix dfuSuffix)
+                : this(dfuSuffix.idVendor, dfuSuffix.idProduct, dfuSuffix.bcdDevice, dfuSuffix.bcdDFU)
+            {
+            }
         }
 
         /// <summary>
