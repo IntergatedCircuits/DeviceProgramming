@@ -309,57 +309,55 @@ namespace DeviceProgramming.Dfu
         /// </summary>
         public void Manifest()
         {
-            Status status;
-
             // After the zero length DFU_DNLOAD request terminates the Transfer phase,
             // the device is ready to manifest the new firmware.
             Dnload(0, new byte[0]);
 
-            // If the device enters dfuMANIFEST-SYNC (bitMainfestationTolerant = 1),
-            // then the host issues the DFU_GETSTATUS request, and the device enters the dfuIDLE state.
-            // At that point, the host can perform another download, solicit an upload, or issue a USB reset
-            // to return the device to application run-time mode.
-            if (DfuDescriptor.ManifestationTolerant)
+            try
             {
+                // wait until manifesting completes
+                Status status;
                 for (status = GetStatus(); status.State == State.Manifest; status = GetStatus())
                 {
                     Thread.Sleep(status.PollTimeout);
                 }
 
-                VerifyState(status, State.Idle);
-
-                BusReset();
-            }
-            // If, however, the device enters the dfuMANIFEST-WAIT-RESET state (bitManifestationTolerant = 0),
-            // then if bitWillDetach = 1 the device generates a detach-attach sequence on the bus,
-            // otherwise (bitWillDetach = 0) the host must issue a USB reset to the device.
-            // After the bus reset the device will evaluate the firmware status and enter the appropriate mode.
-            else
-            {
-                try
+                if (DfuDescriptor.ManifestationTolerant)
                 {
-                    for (status = GetStatus(); status.State == State.Manifest; status = GetStatus())
-                    {
-                        Thread.Sleep(status.PollTimeout);
-                    }
+                    // If the device enters dfuMANIFEST-SYNC (bitMainfestationTolerant = 1),
+                    // then the host issues the DFU_GETSTATUS request, and the device enters the dfuIDLE state.
+                    VerifyState(status, State.Idle);
 
-                    VerifyState(status, State.ManifestWaitReset);
-
+                    // At that point, the host can perform another download, solicit an upload, or issue a USB reset
+                    // to return the device to application run-time mode.
                     BusReset();
                 }
-                catch (Exception)
+                else
                 {
-                    // exceptions due to broken pipe are allowed if the USB device detaches itself
-                    if (DfuDescriptor.WillDetach)
+                    // If, however, the device enters the dfuMANIFEST-WAIT-RESET state (bitManifestationTolerant = 0),
+                    // then if bitWillDetach = 1 the device generates a detach-attach sequence on the bus,
+                    VerifyState(status, State.ManifestWaitReset);
+
+                    // otherwise (bitWillDetach = 0) the host must issue a USB reset to the device.
+                    // After the bus reset the device will evaluate the firmware status and enter the appropriate mode.
+                    if (!DfuDescriptor.WillDetach)
                     {
-                    }
-                    else
-                    {
-                        throw;
+                        BusReset();
                     }
                 }
-                Close();
             }
+            catch (Exception)
+            {
+                // exceptions due to broken pipe are allowed if the USB device detaches itself
+                if (!DfuDescriptor.ManifestationTolerant && DfuDescriptor.WillDetach)
+                {
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            Close();
         }
 
         /// <summary>
