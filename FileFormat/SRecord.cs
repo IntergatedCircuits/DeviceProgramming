@@ -96,7 +96,7 @@ namespace DeviceProgramming.FileFormat
 
         private static readonly int CountCharOffset = 4;
 
-        private static Regex RecordRegex = new Regex
+        private static readonly Regex RecordRegex = new Regex
             (@"^S(?:(?:(?<recordtype>[0,1,5,9]{1})(?<bytecount>[A-F0-9]{2})(?<address>(?:[A-F0-9]{2}){2})) |
                     (?:(?<recordtype>[2,6,8]{1})(?<bytecount>[A-F0-9]{2})(?<address>(?:[A-F0-9]{2}){3})) |
                     (?:(?<recordtype>[3,7]{1})(?<bytecount>[A-F0-9]{2})(?<address>(?:[A-F0-9]{2}){4})))(?<data>(?:[A-F0-9]{2})*)(?<checksum>[A-F0-9]{2})$",

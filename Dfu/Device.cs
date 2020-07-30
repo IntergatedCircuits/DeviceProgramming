@@ -565,7 +565,7 @@ namespace DeviceProgramming.Dfu
             return status;
         }
 
-        private static Regex SeMemoryLayoutRegex = new Regex(
+        private static readonly Regex SeMemoryLayoutRegex = new Regex(
                 @"^@(?<name>[\w\s]*[\w]+)\s*
                  /0x(?<address>[A-F0-9]{1,8})
                  /(\d+)\*(\d+)([\x20KM]{1})([a-g]{1})(?:,(\d+)\*(\d+)([\x20KM]{1})([a-g]{1}))*$",

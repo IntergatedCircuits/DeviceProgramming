@@ -122,7 +122,7 @@ namespace DeviceProgramming.FileFormat
 
         private static readonly int CountCharOffset = 11;
 
-        private static Regex RecordRegex = new Regex
+        private static readonly Regex RecordRegex = new Regex
             (@"^:(?<bytecount>[A-F0-9]{2})(?<address>[A-F0-9]{4})(?<recordtype>0[0-5]{1})(?<data>(?:[A-F0-9]{2})*)(?<checksum>[A-F0-9]{2})$",
             RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
     }
