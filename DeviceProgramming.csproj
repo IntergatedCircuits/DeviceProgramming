@@ -5,15 +5,15 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>Benedek Kupper</Authors>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Description>Standalone C# library for device firmware programming</Description>
     <Copyright>Copyright © Benedek Kupper 2021</Copyright>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/IntergatedCircuits/DeviceProgramming</PackageProjectUrl>
     <RepositoryUrl>https://github.com/IntergatedCircuits/DeviceProgramming</RepositoryUrl>
     <PackageTags>Device Firmware Programming S19 IntelHEX DFU DFUSE</PackageTags>
-    <AssemblyVersion>1.1.0</AssemblyVersion>
-    <FileVersion>1.1.0</FileVersion>
+    <AssemblyVersion>1.0.3</AssemblyVersion>
+    <FileVersion>1.0.3</FileVersion>
     <PackageReleaseNotes>Change project to multitarget</PackageReleaseNotes>
     <Company>IntergatedCircuits</Company>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
