@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>DeviceProgramming</id>
+    <version>1.0.1</version>
+    <title>DeviceProgramming</title>
+    <authors>Benedek Kupper</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/IntergatedCircuits/DeviceProgramming</projectUrl>
+    <description>Standalone C# library for device firmware programming</description>
+    <releaseNotes>Initial release</releaseNotes>
+    <copyright>Copyright © Benedek Kupper 2021</copyright>
+    <tags>Device Firmware Programming S19 IntelHEX DFU</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5" />
+    </dependencies>
+  </metadata>
+</package>
