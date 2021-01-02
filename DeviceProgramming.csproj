@@ -1,77 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B51F26FD-D2C6-4C70-9871-00A9959E7EC0}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DeviceProgramming</RootNamespace>
-    <AssemblyName>DeviceProgramming</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <PackageId>DeviceProgramming</PackageId>
-    <Version>1.0.1</Version>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>Benedek Kupper</Authors>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageDescription>Standalone C# library for device firmware programming</PackageDescription>
-    <Copyright>© Benedek Kupper. All rights reserved.</Copyright>
-    <RepositoryUrl>https://github.com/IntergatedCircuits/DeviceProgramming</RepositoryUrl>
-    <PackageLicenseUrl>https://github.com/IntergatedCircuits/DeviceProgramming/blob/master/LICENSE</PackageLicenseUrl>
+    <Version>1.0.2</Version>
+    <Description>Standalone C# library for device firmware programming</Description>
+    <Copyright>Copyright © Benedek Kupper 2021</Copyright>
+    <PackageLicenseExpression></PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/IntergatedCircuits/DeviceProgramming</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/IntergatedCircuits/DeviceProgramming</RepositoryUrl>
+    <PackageTags>Device Firmware Programming S19 IntelHEX DFU DFUSE</PackageTags>
+    <AssemblyVersion>1.1.0</AssemblyVersion>
+    <FileVersion>1.1.0</FileVersion>
+    <PackageReleaseNotes>Change project to multitarget</PackageReleaseNotes>
     <Company>IntergatedCircuits</Company>
-    <TargetFrameworkProfile />
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <None Include="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ByteArray.cs" />
-    <Compile Include="Crc32.cs" />
-    <Compile Include="Dfu\Device.cs" />
-    <Compile Include="Dfu\Error.cs" />
-    <Compile Include="Dfu\FunctionalDescriptor.cs" />
-    <Compile Include="Dfu\Protocol.cs" />
-    <Compile Include="Dfu\Request.cs" />
-    <Compile Include="Dfu\State.cs" />
-    <Compile Include="Dfu\Status.cs" />
-    <Compile Include="FileFormat\Dfu.cs" />
-    <Compile Include="FileFormat\IntelHex.cs" />
-    <Compile Include="FileFormat\SRecord.cs" />
-    <Compile Include="FileFormat\TextRecordParser.cs" />
-    <Compile Include="Memory\Block.cs" />
-    <Compile Include="Memory\Layout.cs" />
-    <Compile Include="Memory\NamedLayout.cs" />
-    <Compile Include="Memory\NamedMemory.cs" />
-    <Compile Include="Memory\Permissions.cs" />
-    <Compile Include="Memory\RawMemory.cs" />
-    <Compile Include="Memory\Segment.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>
